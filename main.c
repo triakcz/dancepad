@@ -31,7 +31,33 @@ publish any hardware using these IDs! This is for demonstration only!
 /* ----------------------------- USB interface ----------------------------- */
 /* ------------------------------------------------------------------------- */
 
-PROGMEM char usbHidReportDescriptor[52] = { /* USB report descriptor, size must match usbconfig.h */
+PROGMEM char usbHidReportDescriptor[43] = { /* USB report descriptor, size must match usbconfig.h */
+    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+    0x09, 0x05,                    // USAGE (Game Pad)
+    0xa1, 0x01,                    // COLLECTION (Application)
+    0x09, 0x01,                    //   USAGE (Pointer)
+    0xa1, 0x00,                    //   COLLECTION (Physical)
+    0x09, 0x30,                    //     USAGE (X)
+    0x09, 0x31,                    //     USAGE (Y)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x26, 0xff, 0x00,              //     LOGICAL_MAXIMUM (255)
+    0x75, 0x08,                    //   REPORT_SIZE (8)
+    0x95, 0x02,                    //   REPORT_COUNT (2)
+    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+    0xc0,                          // END_COLLECTION
+    0x05, 0x09,                    // USAGE_PAGE (Button)
+    0x19, 0x01,                    //   USAGE_MINIMUM (Button 1)
+    0x29, 0x08,                    //   USAGE_MAXIMUM (Button 8)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
+    0x75, 0x01,                    // REPORT_SIZE (1)
+    0x95, 0x08,                    // REPORT_COUNT (8)
+    0x81, 0x02,                    // INPUT (Data,Var,Abs)
+    0xc0                           // END_COLLECTION
+};
+
+/*
+PROGMEM char usbHidReportDescriptor[52] = { // USB report descriptor, size must match usbconfig.h
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
     0x09, 0x02,                    // USAGE (Mouse)
     0xa1, 0x01,                    // COLLECTION (Application)
@@ -60,6 +86,7 @@ PROGMEM char usbHidReportDescriptor[52] = { /* USB report descriptor, size must 
     0xC0,                          //   END_COLLECTION
     0xC0,                          // END COLLECTION
 };
+*/
 /* This is the same report descriptor as seen in a Logitech mouse. The data
  * described by this descriptor consists of 4 bytes:
  *      .  .  .  .  . B2 B1 B0 .... one byte with mouse button states
