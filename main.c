@@ -97,10 +97,14 @@ usbRequest_t    *rq = (void *)data;
 int __attribute__((noreturn)) main(void)
 {
 	uchar   i;
+	uchar 	buttons;
+	uchar 	repButtons=0;
 	reportBuffer.x=127;
 	reportBuffer.y=127;
-//	PORTA=0;
-//	DDRA=0xff;
+	PORTA=0x00; //pullupy vypneme, mame tam externi (citlivost)
+	DDRA=0x0;
+	PORTC=0xff;
+	DDRC=0x01; //PC0 je LED
 
     wdt_enable(WDTO_1S);
     /* Even if you don't use the watchdog, turn it off here. On newer devices,
@@ -126,9 +130,12 @@ int __attribute__((noreturn)) main(void)
         DBG1(0x02, 0, 0);   /* debug output: main loop iterates */
         wdt_reset();
         usbPoll();
-        if(usbInterruptIsReady()){
+		buttons = PINA;
+        if(usbInterruptIsReady() && (buttons != repButtons)){
             /* called after every poll of the interrupt endpoint */
-            reportBuffer.buttons=PINA;
+            repButtons=buttons;
+            reportBuffer.buttons=~buttons;
+			PORTC^=(1<<PC0);
             DBG1(0x03, 0, 0);   /* debug output: interrupt report prepared */
             usbSetInterrupt((void *)&reportBuffer, sizeof(reportBuffer));
         }
