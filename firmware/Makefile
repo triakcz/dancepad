@@ -9,8 +9,8 @@
 
 DEVICE  = atmega162
 F_CPU   = 12000000	# in Hz
-FUSE_L  = # see below for fuse values for particular devices
-FUSE_H  = 
+FUSE_L  = 0x9f
+FUSE_H  = 0xc9
 AVRDUDE = avrdude -c dasa -p $(DEVICE) -P /dev/ttyUSB0 # edit this line for your programmer
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
